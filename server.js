@@ -1,9 +1,10 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+// var messages = require('./messages-mock')();
+// var messages = require('./api');
 
-
-var messages = [{text: 'some text', owner: 'Bob'},{text: 'other message', owner: 'Janie'}];
+// var messages = [{text: 'some text', owner: 'Bob'},{text: 'other message', owner: 'Janie'}];
 
 app.use(bodyParser.json()); // body-parser's middleware
 
@@ -13,23 +14,19 @@ app.use((req, res, next) => { // CORS because the ports are different URLS
   next();
 }) // middleware must be above routes
 
-app.get('/', (req, res) => {
-  res.redirect('/messages');
-})
 
-app.get('/messages', (req, res) => {
-  res.json(messages);
-})
+var apiRoutes = require('../backend/api')(app);
 
-app.post('/message', (req, res) => {
-  console.log(req.body);
-  res.sendStatus(200);
-})
+// app.post('/message', (req, res) => {
+//   // console.log(req.body);
+//   messages.push(req.body);
+//   console.log(messages);
+//   res.sendStatus(200);
+// })
 
-// app.get('/api/messages', (req, res) => { you could do this instead of the api.js and messages-mock
+// app.get('/api/messages', (req, res) => { //you could do this instead of the api.js and messages-mock
 //   res.json(messages);
 // })
 
-var apiRoutes = require('../backend/api')(app);
 
 app.listen(1234);
